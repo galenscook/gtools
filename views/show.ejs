@@ -108,13 +108,15 @@
         }
       })
 
-      socket.on('usernames', function(data){
-        var last = data.length - 1
-        var users = ''
-        data.forEach(function(username){
-          users += '<li>'+username+'</li>'
-        })
-          $('#participants ul').html(users);
+      socket.on('usernames', function(doc){
+        if (doc.title === docName) {
+          var last = doc.usernames.length - 1
+          var users = ''
+          doc.usernames.forEach(function(username){
+            users += '<li>'+username+'</li>'
+          })
+            $('#participants ul').html(users);
+          }
       })
 
       socket.on('load current content', function(doc){
