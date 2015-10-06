@@ -26,7 +26,7 @@ var db = mongoose.connect('mongodb://localhost/gtools', function(error){
 var docSchema = mongoose.Schema({
   title: String,
   content: String,
-  // users: Array,
+  users: {type: Array, default: []},
   created: {type: Date, default: Date.now}
 });
 
@@ -60,18 +60,30 @@ app.use('/', routes);
 
 io.on('connection', function(socket){
   //find by document name once route is set
-  var docName = socket.handshake.query.name
-  Document.findOne({title: docName}, function(error, doc){
+  // var docName = socket.handshake.query.name
+  // Document.findOne({title: docName}, function(error, doc){
+  //   socket.emit('load current content', doc)
+  // });
+  findCurrentDoc(function(error, doc){
     socket.emit('load current content', doc)
   });
+
   socket.on('disconnect', function(){
     if(!socket.username) return;
-    usernames.splice(usernames.indexOf(socket.username), 1)
-    updateUsernames()
+    findCurrentDoc(function(error, doc){
+      doc.users.splice(doc.users.indexOf(socket.username), 1)
+      updateUsernames(doc.users, doc.title)
+    })
+    // usernames.splice(usernames.indexOf(socket.username), 1)
   })
 
-  function updateUsernames(){
-    io.emit('usernames', usernames)
+  function findCurrentDoc(f){
+    var docName = socket.handshake.query.name;
+    Document.findOne({title:docName}, f);
+  }
+
+  function updateUsernames(usernames, docTitle){
+    io.emit('usernames', {usernames: usernames, title: docTitle})
   }
   socket.on('new user', function(data, callback){
     if(usernames.indexOf(data) != -1){
@@ -79,16 +91,26 @@ io.on('connection', function(socket){
     } else{
       callback(true);
       socket.username = data;
-      usernames.push(socket.username);
-      updateUsernames();
+      findCurrentDoc(function(error, doc){
+        // console.log(doc.users);
+        doc.users.push(socket.username)
+        doc.save()
+        // (
+        //   // {title: docName},
+        //   { $push: { users: socket.username }})
+        
+        // console.log(doc.users)
+        updateUsernames(doc.users, doc.title);
+      })
+      // usernames.push(socket.username);
     }
   });
 
   socket.on('content', function(text){
-    var updatedDocName = socket.handshake.query.name
+    // var updatedDocName = socket.handshake.query.name
     // console.log(updatedDocName)
-    Document.findOne({title: docName}, function(error, doc){
-      doc.title = updatedDocName;
+    findCurrentDoc(function(error, doc){
+      doc.title = docName;
       doc.content = text;
       doc.save();
       // doc.update({content: text}, function(error){
