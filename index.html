@@ -32,7 +32,6 @@
       }
       #pad{
           font-family: Menlo,Monaco,Consolas,"Courier New",monospace;
-          /*border: 1px solid black;*/
           overflow: auto;
           outline: none;
           resize: none;
@@ -44,7 +43,6 @@
 
       #participants {
           overflow: auto;list-style-type: none; margin: 0; padding: 0; 
-          /*border-left: 1px solid black;*/
       }
       #participants li { padding: 5px 10px; }
     </style>
@@ -71,13 +69,6 @@
               <h4>Current Participants</h4>
               <ul>
               </ul>
-           
-            <!-- <div id='chat'>
-              <ul id="messages"></ul>
-                <form action="">
-                  <input id="m" autocomplete="off" /><button>Send</button>
-                </form>
-            </div> -->
           </div>
         </div>
       </div>
@@ -119,7 +110,19 @@
         })
           $('#participants ul').html(users);
       })
-      // $('form').submit(function(){
+
+      socket.on('load current content', function(docs){
+        var content = "";
+        var lastSave = docs.length - 1
+        $('textarea').val(docs[lastSave].content)
+      })
+    </script>
+  </body>
+</html>
+
+
+<!-- GRAVEYARD -->
+      <!-- // $('form').submit(function(){
       //   socket.emit('chat message', $('#m').val());
       //   $('#m').val('');
       //   return false;
@@ -129,7 +132,11 @@
       // });
       // socket.on('connection message', function(msg){
       //   $('#participants ul').append($('<li>').text(msg));
-      // })
-    </script>
-  </body>
-</html>
+      // }) -->
+           
+            <!-- <div id='chat'>
+              <ul id="messages"></ul>
+                <form action="">
+                  <input id="m" autocomplete="off" /><button>Send</button>
+                </form>
+            </div> -->

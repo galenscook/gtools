@@ -4,15 +4,37 @@ var io = require('socket.io')(http);
 var usernames = [];
 
 
+//mongoose/mongodb  **NEED THIS IN ORDER FOR TEXT TO APPEAR ON PAGE OPEN**
+var mongoose = require('mongoose')
+
+// connect to mongoose
+mongoose.connect('mongodb://localhost/gtools', function(error){
+  if(error){
+    console.log(error)
+  } else {
+    console.log("succcess")
+  }
+});
+
+//set schema
+
+var docSchema = mongoose.Schema({
+  content: String,
+  created: {type: Date, default: Date.now}
+});
+
+var Document = mongoose.model('Document', docSchema);
+
+
 app.get('/', function(req, res){
   res.sendFile(__dirname + '/index.html');
 });
 
 io.on('connection', function(socket){
-  io.emit('connection message', 'New user has entered.');
-
+  Document.find({}, function(error, docs){
+    socket.emit('load current content', docs)
+  });
   socket.on('disconnect', function(){
-    io.emit('connection message', 'User has exited.');
     if(!socket.username) return;
     usernames.splice(usernames.indexOf(socket.username), 1)
     updateUsernames()
@@ -31,16 +53,25 @@ io.on('connection', function(socket){
       updateUsernames();
     }
   });
-  // socket.on('chat message', function(msg){
-  //   io.emit('chat message', msg);
-  // });
 
   socket.on('content', function(text){
-
-    io.emit('content', text);
+    var docUpdate = new Document({content: text});
+    docUpdate.save(function(error){
+      if(error) throw error;
+      io.emit('content', text);
+    })
   });
 });
+
 
 http.listen(3000, function(){
   console.log('listening on *:3000');
 });
+
+
+
+// GRAVEYARD
+  // socket.on('chat message', function(msg){
+  //   io.emit('chat message', msg);
+  // });
+  // io.emit('connection message', 'New user has entered.');
