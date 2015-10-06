@@ -78,7 +78,44 @@
     <script src="https://cdn.socket.io/socket.io-1.2.0.js"></script>
     <script src="http://code.jquery.com/jquery-1.11.1.js"></script>
     <script>
+      var socket = io()
 
+      $('#setUsername').submit(function(event){
+        event.preventDefault();
+        socket.emit('new user', $('#username').val(), function(data){
+          if(data){
+            $('#usernameWrap').hide();
+            $('#contentWrap').show();
+          } else {
+            $('#usernameError').html('That username is already taken.  Try again.')
+          }
+        });
+        $('#username').val('');
+      })
+  
+      $('textarea').on("keyup", function(){
+        socket.emit('content', $('textarea').val());
+        return false
+      })
+
+      socket.on('content', function(text){
+        $('textarea').val(text)
+      })
+
+      socket.on('usernames', function(data){
+        var last = data.length - 1
+        var users = ''
+        data.forEach(function(username){
+          users += '<li>'+username+'</li>'
+        })
+          $('#participants ul').html(users);
+      })
+
+      socket.on('load current content', function(docs){
+        var content = "";
+        var lastSave = docs.length - 1
+        $('textarea').val(docs[lastSave].content)
+      })
     </script>
   </body>
 </html>

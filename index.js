@@ -34,6 +34,11 @@ app.get('/', function(req, res){
   res.sendFile(__dirname + '/index.html');
 });
 
+
+app.get('/show', function(req, res){
+  res.sendFile(__dirname + '/show.html');
+})
+
 io.on('connection', function(socket){
   //find by document name once route is set
   Document.find({}, function(error, docs){
