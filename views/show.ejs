@@ -60,6 +60,7 @@
       </div>
       <div id='contentWrap'>
         <h1>gTools</h1>
+        <h2><%=title%></h2>
         <div class='row'>
           <div class='col-md-8 full-height' id='pad'>
             <textarea> </textarea>
@@ -78,7 +79,8 @@
     <script src="https://cdn.socket.io/socket.io-1.2.0.js"></script>
     <script src="http://code.jquery.com/jquery-1.11.1.js"></script>
     <script>
-      var socket = io()
+      var docName = $('h2').text()
+      var socket = io('', {query: 'name='+docName})
 
       $('#setUsername').submit(function(event){
         event.preventDefault();
@@ -98,8 +100,12 @@
         return false
       })
 
-      socket.on('content', function(text){
-        $('textarea').val(text)
+      socket.on('content', function(doc){
+          console.log(doc.title)
+          console.log(doc.text)
+        if (doc.title === docName) {
+          $('textarea').val(doc.text)
+        }
       })
 
       socket.on('usernames', function(data){
@@ -111,10 +117,10 @@
           $('#participants ul').html(users);
       })
 
-      socket.on('load current content', function(docs){
-        var content = "";
-        var lastSave = docs.length - 1
-        $('textarea').val(docs[lastSave].content)
+      socket.on('load current content', function(doc){
+          // var content = "";
+          var lastSave = doc.length - 1
+          $('textarea').val(doc.content)
       })
     </script>
   </body>
