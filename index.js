@@ -110,12 +110,12 @@ io.on('connection', function(socket){
     // var updatedDocName = socket.handshake.query.name
     // console.log(updatedDocName)
     findCurrentDoc(function(error, doc){
-      doc.title = docName;
+      // doc.title = docName;
       doc.content = text;
       doc.save();
       // doc.update({content: text}, function(error){
       // if(error) throw error;
-      io.emit('content', {text: text, title: updatedDocName});
+      io.emit('content', {text: text, title: doc.title});
     // })
     });
     // change to Document.update({ title: doctitle }, {content: text})
