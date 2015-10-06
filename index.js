@@ -19,6 +19,7 @@ mongoose.connect('mongodb://localhost/gtools', function(error){
 //set schema
 
 var docSchema = mongoose.Schema({
+  title: String,
   content: String,
   created: {type: Date, default: Date.now}
 });
@@ -26,11 +27,15 @@ var docSchema = mongoose.Schema({
 var Document = mongoose.model('Document', docSchema);
 
 
+// Add in routes to create new documents
+// On creation, create new Document with the title provided
+
 app.get('/', function(req, res){
   res.sendFile(__dirname + '/index.html');
 });
 
 io.on('connection', function(socket){
+  //find by document name once route is set
   Document.find({}, function(error, docs){
     socket.emit('load current content', docs)
   });
@@ -55,6 +60,7 @@ io.on('connection', function(socket){
   });
 
   socket.on('content', function(text){
+    // change to Document.update({ title: doctitle }, {content: text})
     var docUpdate = new Document({content: text});
     docUpdate.save(function(error){
       if(error) throw error;
