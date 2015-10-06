@@ -32,7 +32,6 @@
       }
       #pad{
           font-family: Menlo,Monaco,Consolas,"Courier New",monospace;
-          /*border: 1px solid black;*/
           overflow: auto;
           outline: none;
           resize: none;
@@ -44,7 +43,6 @@
 
       #participants {
           overflow: auto;list-style-type: none; margin: 0; padding: 0; 
-          /*border-left: 1px solid black;*/
       }
       #participants li { padding: 5px 10px; }
     </style>
@@ -71,13 +69,6 @@
               <h4>Current Participants</h4>
               <ul>
               </ul>
-           
-            <!-- <div id='chat'>
-              <ul id="messages"></ul>
-                <form action="">
-                  <input id="m" autocomplete="off" /><button>Send</button>
-                </form>
-            </div> -->
           </div>
         </div>
       </div>
@@ -87,39 +78,14 @@
     <script src="https://cdn.socket.io/socket.io-1.2.0.js"></script>
     <script src="http://code.jquery.com/jquery-1.11.1.js"></script>
     <script>
-      var socket = io()
 
-      $('#setUsername').submit(function(event){
-        event.preventDefault();
-        socket.emit('new user', $('#username').val(), function(data){
-          if(data){
-            $('#usernameWrap').hide();
-            $('#contentWrap').show();
-          } else {
-            $('#usernameError').html('That username is already taken.  Try again.')
-          }
-        });
-        $('#username').val('');
-      })
+    </script>
+  </body>
+</html>
 
-      $('textarea').on("keyup", function(){
-        socket.emit('content', $('textarea').val());
-        return false
-      })
 
-      socket.on('content', function(text){
-        $('textarea').val(text)
-      })
-
-      socket.on('usernames', function(data){
-        var last = data.length - 1
-        var users = ''
-        data.forEach(function(username){
-          users += '<li>'+username+'</li>'
-        })
-          $('#participants ul').html(users);
-      })
-      // $('form').submit(function(){
+<!-- GRAVEYARD -->
+      <!-- // $('form').submit(function(){
       //   socket.emit('chat message', $('#m').val());
       //   $('#m').val('');
       //   return false;
@@ -129,7 +95,11 @@
       // });
       // socket.on('connection message', function(msg){
       //   $('#participants ul').append($('<li>').text(msg));
-      // })
-    </script>
-  </body>
-</html>
+      // }) -->
+           
+            <!-- <div id='chat'>
+              <ul id="messages"></ul>
+                <form action="">
+                  <input id="m" autocomplete="off" /><button>Send</button>
+                </form>
+            </div> -->
