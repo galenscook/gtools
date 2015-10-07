@@ -20,7 +20,7 @@ At this point, you can direct your browser to `127.0.0.1:3000` to see the homepa
 If you'd like to contribute to this project, I welcome forks and issues!  
 
 ###Helpful Resources
-+[Treehouse Node Tutorial](http://teamtreehouse.com/library/build-a-simple-dynamic-site-with-nodejs)
-+[Socket.io Chatroom Tutorial](http://socket.io/get-started/chat/)
-+[Socket.io Chatroom Walkthrough](https://www.youtube.com/playlist?list=PLicY6aYZ8ilpmHfJ8jP1lt7ihPpRWBJ9P)
-+[Node/Express/MongoDB Tutorial](http://cwbuecheler.com/web/tutorials/2013/node-express-mongo/)
+++[Treehouse Node Tutorial](http://teamtreehouse.com/library/build-a-simple-dynamic-site-with-nodejs)
+++[Socket.io Chatroom Tutorial](http://socket.io/get-started/chat/)
+++[Socket.io Chatroom Walkthrough](https://www.youtube.com/playlist?list=PLicY6aYZ8ilpmHfJ8jP1lt7ihPpRWBJ9P)
+++[Node/Express/MongoDB Tutorial](http://cwbuecheler.com/web/tutorials/2013/node-express-mongo/)
