@@ -51,7 +51,7 @@
   <div class='col col-md-8 col-md-offset-2'>
     <h1>gTools</h1>
     <div id='docNameWrap'>
-      <p>Create a new document:</p>
+      <p>Create a new document or find an existing one:</p>
       <p id='docNameError'></p>
       <form id='setDocName', method="post", action='/'>
       <input size='35' name='title', id='title' placeholder='Document Title'>
@@ -63,7 +63,31 @@
     <script src="https://cdn.socket.io/socket.io-1.2.0.js"></script>
     <script src="http://code.jquery.com/jquery-1.11.1.js"></script>
     <script>
-    // var socket = io()
+    </script>
+  </body>
+</html>
+
+
+<!-- GRAVEYARD -->
+      <!-- // $('form').submit(function(){
+      //   socket.emit('chat message', $('#m').val());
+      //   $('#m').val('');
+      //   return false;
+      // });
+      // socket.on('chat message', function(msg){
+      //   $('#messages').append($('<li>').text(msg));
+      // });
+      // socket.on('connection message', function(msg){
+      //   $('#participants ul').append($('<li>').text(msg));
+      // }) -->
+           
+            <!-- <div id='chat'>
+              <ul id="messages"></ul>
+                <form action="">
+                  <input id="m" autocomplete="off" /><button>Send</button>
+                </form>
+            </div> -->
+   <!--  // var socket = io()
 
     // $('#setUsername').submit(function(event){
     //   event.preventDefault();
@@ -100,28 +124,4 @@
     //   var content = "";
     //   var lastSave = docs.length - 1
     //   $('textarea').val(docs[lastSave].content)
-    // })
-    </script>
-  </body>
-</html>
-
-
-<!-- GRAVEYARD -->
-      <!-- // $('form').submit(function(){
-      //   socket.emit('chat message', $('#m').val());
-      //   $('#m').val('');
-      //   return false;
-      // });
-      // socket.on('chat message', function(msg){
-      //   $('#messages').append($('<li>').text(msg));
-      // });
-      // socket.on('connection message', function(msg){
-      //   $('#participants ul').append($('<li>').text(msg));
-      // }) -->
-           
-            <!-- <div id='chat'>
-              <ul id="messages"></ul>
-                <form action="">
-                  <input id="m" autocomplete="off" /><button>Send</button>
-                </form>
-            </div> -->
+    // }) -->

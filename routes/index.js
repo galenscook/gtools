@@ -1,6 +1,5 @@
 var express = require('express');
 var router = express.Router();
-// var Document = require('Document')
 
 /* GET home page. */
 router.get('/', function(req, res) {
@@ -10,14 +9,9 @@ router.get('/', function(req, res) {
 /* POST add new doc to database */
 
 router.post('/', function(req, res){
-  // var db = req.db
   var Document = req.Document
-  // console.log(db)
-  // var collection = db.get('doccollection') 
-  // console.log(req.body)
   var doc = new Document({title: req.body.title, content: ''});
   doc.save();
-  // console.log(doc.id)
   res.redirect('/show/'+doc.title)
 });
 
@@ -26,3 +20,11 @@ router.get('/show/:id', function(req, res) {
 });
 
 module.exports = router;
+
+
+  // console.log(doc.id)
+  // console.log(db)
+  // var collection = db.get('doccollection') 
+  // console.log(req.body)
+  // var db = req.db
+// var Document = require('Document')

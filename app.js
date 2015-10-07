@@ -18,9 +18,6 @@ var db = mongoose.connect('mongodb://localhost/gtools', function(error){
   }
 });
 
-
-
-// var db = monk('localhost:27017/gtools');
 //set schema
 
 var docSchema = mongoose.Schema({
@@ -32,18 +29,6 @@ var docSchema = mongoose.Schema({
 
 var Document = mongoose.model('Document', docSchema);
 
-
-// Add in routes to create new documents
-// On creation, create new Document with the title provided
-
-// app.get('/', function(req, res){
-//   res.sendFile(__dirname + '/index.html');
-// });
-
-
-// app.get('/show', function(req, res){
-//   res.sendFile(__dirname + '/show.html');
-// })
 
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
@@ -59,11 +44,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use('/', routes);
 
 io.on('connection', function(socket){
-  //find by document name once route is set
-  // var docName = socket.handshake.query.name
-  // Document.findOne({title: docName}, function(error, doc){
-  //   socket.emit('load current content', doc)
-  // });
+
   findCurrentDoc(function(error, doc){
     socket.emit('load current content', doc)
   });
@@ -74,7 +55,6 @@ io.on('connection', function(socket){
       doc.users.splice(doc.users.indexOf(socket.username), 1)
       updateUsernames(doc.users, doc.title)
     })
-    // usernames.splice(usernames.indexOf(socket.username), 1)
   })
 
   function findCurrentDoc(f){
@@ -92,42 +72,20 @@ io.on('connection', function(socket){
       callback(true);
       socket.username = data;
       findCurrentDoc(function(error, doc){
-        // console.log(doc.users);
         doc.users.push(socket.username)
         doc.save()
-        // (
-        //   // {title: docName},
-        //   { $push: { users: socket.username }})
-        
-        // console.log(doc.users)
         updateUsernames(doc.users, doc.title);
       })
-      // usernames.push(socket.username);
     }
   });
 
   socket.on('content', function(text){
-    // var updatedDocName = socket.handshake.query.name
-    // console.log(updatedDocName)
     findCurrentDoc(function(error, doc){
-      // doc.title = docName;
       doc.content = text;
       doc.save();
-      // doc.update({content: text}, function(error){
-      // if(error) throw error;
       io.emit('content', {text: text, title: doc.title});
-    // })
     });
-    // change to Document.update({ title: doctitle }, {content: text})
-    // var docUpdate = new Document({content: text});
-    // Document.update({title: updatedDocName}, {content: text}, function(error){
-    //   if(error) throw error;
-    //   io.emit('content', text);
-    // })
-    // docUpdate.save(function(error){
-    //   if(error) throw error;
-    //   io.emit('content', text);
-    // })
+
   });
 });
 
@@ -143,3 +101,33 @@ module.exports = app;
   //   io.emit('chat message', msg);
   // });
   // io.emit('connection message', 'New user has entered.');
+
+     // change to Document.update({ title: doctitle }, {content: text})
+    // var docUpdate = new Document({content: text});
+    // Document.update({title: updatedDocName}, {content: text}, function(error){
+    //   if(error) throw error;
+    //   io.emit('content', text);
+    // })
+    // docUpdate.save(function(error){
+    //   if(error) throw error;
+    //   io.emit('content', text);
+    // }) 
+// var db = monk('localhost:27017/gtools');
+
+  //find by document name once route is set
+  // var docName = socket.handshake.query.name
+  // Document.findOne({title: docName}, function(error, doc){
+  //   socket.emit('load current content', doc)
+  // });
+
+// Add in routes to create new documents
+// On creation, create new Document with the title provided
+
+// app.get('/', function(req, res){
+//   res.sendFile(__dirname + '/index.html');
+// });
+
+
+// app.get('/show', function(req, res){
+//   res.sendFile(__dirname + '/show.html');
+// })
